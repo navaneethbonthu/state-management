@@ -7,6 +7,10 @@ import { HomeComponent } from './home/home.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CounterComponent } from './counter/counter.component';
 import { HeaderComponent } from './header/header.component';
+import { CounterValueComponent } from './counter/counter-value/counter-value.component';
+import { CounterButtonComponent } from './counter/counter-button/counter-button.component';
+import { CustomInputComponent } from './counter/custom-input/custom-input.component';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -14,11 +18,15 @@ import { HeaderComponent } from './header/header.component';
     HomeComponent,
     CoursesComponent,
     CounterComponent,
-    HeaderComponent
+    HeaderComponent,
+    CounterValueComponent,
+    CounterButtonComponent,
+    CustomInputComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({}, {})
   ],
   providers: [],
   bootstrap: [AppComponent]

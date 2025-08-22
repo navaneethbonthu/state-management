@@ -1,30 +1,15 @@
-*,
-*::before,
-*::after {
+/* *  style.css  ** */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+* {
+    margin: 0px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
-/* 2. Body and Root HTML Styling */
-html,
 body {
-    margin: 0;
-    /* Remove default margin */
-    padding: 0;
-    /* Remove default padding */
-    height: 100%;
-    /* Ensure body and html take full height */
-    width: 100%;
-    /* Ensure body and html take full width */
-    font-family: 'Inter', sans-serif;
-    /* Set a default font family */
-    background-color: #f4f7f6;
-    /* A light background color for the app */
-    color: #333;
-    /* Default text color */
-    line-height: 1.6;
-    /* Improve readability */
-    -webkit-font-smoothing: antialiased;
-    /* Smoother font rendering for webkit browsers */
-    -moz-osx-font-smoothing: grayscale;
-    /* Smoother font rendering for firefox */
+    font-family: "Roboto", sans-serif;
+    background-color: #f2f3f4;
 }
