@@ -1,9 +1,9 @@
 <div class="app-custom-value">
     <div class="toggle-btn-container">
-        <button class="toggle-btn" (click)="onCustomeToggleBtn()">{{showCustomeToggle ? '-' : '+'}}</button>
+        <button class="toggle-btn" (click)="onCustomeToggleBtn()">{{(showCustomeToggle$ | async) ? '-' : '+'}}</button>
     </div>
 
-    <div class="custom-input-container" *ngIf="showCustomeToggle">
+    <div class="custom-input-container" *ngIf="showCustomeToggle$">
         <input type="text" [(ngModel)]="customCounter">
         <button class="btn-increment-by" (click)="onCustomeIncrementBtn()">
             Increment By
