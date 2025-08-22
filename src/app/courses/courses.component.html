@@ -1,1 +1,26 @@
-<p>courses works!</p>
+<div class="course-container">
+    <div class="courses-page-header">
+        <div class="course-header-text">
+            <h2>All Courses</h2>
+        </div>
+
+        <div class="course-header-search">
+            <input type="text" placeholder="Search Course">
+            <button>Search</button>
+        </div>
+
+        <div class="course-create">
+            <button class="create-course-button">
+                Create Course
+            </button>
+        </div>
+    </div>
+
+    <div class="course-list-container">
+        <ng-container *ngFor="let courseItem of (courses$ | async)">
+            <app-course-card [course]="courseItem">
+
+            </app-course-card>
+        </ng-container>
+    </div>
+</div>

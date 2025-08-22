@@ -4,6 +4,7 @@ import { counterState } from '../states/counter.state';
 import { customIncrement, customToggle } from '../states/counter.action';
 import { getCounterState, getToggle } from '../states/counter.selector';
 import { Observable } from 'rxjs';
+import { appState } from 'src/app/store/app.state';
 
 @Component({
   selector: 'app-custom-input',
@@ -14,7 +15,7 @@ export class CustomInputComponent implements OnInit {
   customCounter: number = 0;
   showCustomeToggle$: Observable<boolean> | null = null;
 
-  constructor(private store: Store<{ counter: counterState }>) {}
+  constructor(private store: Store<appState>) {}
   ngOnInit(): void {
     this.showCustomeToggle$ = this.store.select(getToggle);
   }
