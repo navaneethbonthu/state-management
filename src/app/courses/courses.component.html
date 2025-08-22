@@ -10,7 +10,7 @@
         </div>
 
         <div class="course-create">
-            <button class="create-course-button">
+            <button class="create-course-button" (click)="onCreateCourseBtnClicked()">
                 Create Course
             </button>
         </div>
@@ -19,8 +19,12 @@
     <div class="course-list-container">
         <ng-container *ngFor="let courseItem of (courses$ | async)">
             <app-course-card [course]="courseItem">
-
             </app-course-card>
         </ng-container>
     </div>
 </div>
+
+
+<ng-container *ngIf="showForm$ |  async">
+    <app-add-course></app-add-course>
+</ng-container>

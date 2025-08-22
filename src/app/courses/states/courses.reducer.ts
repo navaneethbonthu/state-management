@@ -1,5 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialState } from './courses.state';
-import { getCourses } from './courses.actions';
+import { showFormAction } from './courses.actions';
 
-export const coursesReducer = createReducer(initialState);
+export const coursesReducer = createReducer(
+  initialState,
+  on(showFormAction, (state, action) => {
+    return { ...state, showForm: action.value };
+  })
+);

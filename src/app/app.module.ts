@@ -11,10 +11,11 @@ import { CounterValueComponent } from './counter/counter-value/counter-value.com
 import { CounterButtonComponent } from './counter/counter-button/counter-button.component';
 import { CustomInputComponent } from './counter/custom-input/custom-input.component';
 import { StoreModule } from '@ngrx/store';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducer } from './store/app.state';
 import { CourseCardComponent } from './courses/course-card/course-card.component';
+import { AddCourseComponent } from './courses/add-course/add-course.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +28,13 @@ import { CourseCardComponent } from './courses/course-card/course-card.component
     CounterButtonComponent,
     CustomInputComponent,
     CourseCardComponent,
+    AddCourseComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(appReducer),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],

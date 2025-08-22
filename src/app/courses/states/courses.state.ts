@@ -2,6 +2,7 @@ import { Course } from 'src/app/models/course';
 
 export interface CoursesState {
   courses: Course[];
+  showForm: boolean;
 }
 
 export const initialState: CoursesState = {
@@ -53,4 +54,5 @@ export const initialState: CoursesState = {
       price: 89.99,
     },
   ],
+  showForm: false,
 };
