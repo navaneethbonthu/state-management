@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { appState } from 'src/app/store/app.state';
-import { showFormAction } from '../states/courses.actions';
+import { createCourse, showFormAction } from '../states/courses.actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
@@ -42,6 +42,11 @@ export class AddCourseComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log(this.coursesForm?.value);
+    if (!this.coursesForm.valid) {
+      console.log('form not valid', this.coursesForm?.value);
+    } else {
+      this.store.dispatch(createCourse({ course: this.coursesForm.value }));
+      this.store.dispatch(showFormAction({ value: false }));
+    }
   }
 }
