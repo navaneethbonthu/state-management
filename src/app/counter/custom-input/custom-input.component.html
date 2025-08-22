@@ -1,12 +1,11 @@
 <div class="app-custom-value">
     <div class="toggle-btn-container">
-        <button class="toggle-btn">+</button>
+        <button class="toggle-btn" (click)="onCustomeToggleBtn()">{{showCustomeToggle ? '-' : '+'}}</button>
     </div>
 
-    <div class="custom-input-container">
-        <input type="text">
-        <!-- [(ngModel)]="value" -->
-        <button class="btn-increment-by">
+    <div class="custom-input-container" *ngIf="showCustomeToggle">
+        <input type="text" [(ngModel)]="customCounter">
+        <button class="btn-increment-by" (click)="onCustomeIncrementBtn()">
             Increment By
         </button>
     </div>
