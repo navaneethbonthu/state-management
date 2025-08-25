@@ -3,27 +3,31 @@
         <span class="close" (click)="hideCreateForm()">&times;</span>
         <!-- (click)="showForm = false" -->
         <div class="form-container">
-            <h2>Create New Course</h2>
+            <h2>{{!isEdit? ' Add ': 'Update'}} New Course</h2>
             <form class="course-form" [formGroup]="coursesForm" (ngSubmit)="onFormSubmit()">
                 <div class="form-field">
                     <label for="title">Title</label>
                     <input type="text" placeholder="e.g., Introduction to Web Development" formControlName="title">
+                    <div>{{handleTitleValidationErrors()}}</div>
                 </div>
 
                 <div class="form-field">
                     <label for="description">Description</label>
                     <textarea rows="5" placeholder="Provide a detailed description of the course"
                         formControlName="description"></textarea>
+                    <div>{{handleDescriptionValidationErrors()}}</div>
                 </div>
 
                 <div class="form-field">
                     <label for="author">Author</label>
                     <input type="text" placeholder="e.g., John Doe" formControlName="author">
+                    <div>{{handleAuthorValidationErrors()}}</div>
                 </div>
 
                 <div class="form-field">
                     <label for="price">Price</label>
                     <input type="number" step="0.01" placeholder="e.g., 99.99" formControlName="price">
+                    <div>{{handleTitleValidationErrors()}}</div>
                 </div>
 
                 <div class="form-field file-upload-field">
@@ -36,8 +40,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="submit-button">Create Course</button>
-                    <button type="reset" class="cancel-button">Clear Form</button>
+                    <button type="submit" class="submit-button">{{!isEdit? ' Add ': 'Update'}} Course</button>
+                    <button type="reset" class="cancel-button" *ngIf="!isEdit">Clear Form</button>
                 </div>
             </form>
         </div>

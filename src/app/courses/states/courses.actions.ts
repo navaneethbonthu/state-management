@@ -10,3 +10,22 @@ export const createCourse = createAction(
   'createCourse',
   props<{ course: Course }>()
 );
+
+export const setEditMode = createAction(
+  'setEditMode',
+  props<{ value: boolean }>()
+);
+export const setSelectedCourse = createAction(
+  'setSelectedCourse',
+  props<{ course: Course | null }>()
+);
+
+export const updateCourse = createAction(
+  'updateCourse',
+  props<{ course: Course | null }>()
+);
+
+export const deleteCourse = createAction(
+  'deleteCourse',
+  props<{ id: number | undefined }>()
+);

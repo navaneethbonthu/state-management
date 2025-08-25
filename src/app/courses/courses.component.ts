@@ -3,7 +3,7 @@ import { Course } from '../models/course';
 import { appState } from '../store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { showFormAction } from './states/courses.actions';
+import { setEditMode, showFormAction } from './states/courses.actions';
 import { getCourses, getShowForm } from './states/courses.selector';
 
 @Component({
@@ -22,6 +22,7 @@ export class CoursesComponent implements OnInit {
   }
 
   onCreateCourseBtnClicked() {
+    this.store.dispatch(setEditMode({ value: false }));
     this.store.dispatch(showFormAction({ value: true }));
   }
 }

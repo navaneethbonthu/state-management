@@ -10,3 +10,11 @@ export const getCourses = createSelector(getCoursesState, (state) => {
 export const getShowForm = createSelector(getCoursesState, (state) => {
   return state.showForm;
 });
+
+export const getEditMode = createSelector(getCoursesState, (state) => {
+  return state.isEditMode;
+});
+
+export const getSelectedCourse = createSelector(getCoursesState, (state) => {
+  return state.selectedCourse;
+});

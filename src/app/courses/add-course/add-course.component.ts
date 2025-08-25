@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { appState } from 'src/app/store/app.state';
-import { createCourse, showFormAction } from '../states/courses.actions';
+import {
+  createCourse,
+  showFormAction,
+  updateCourse,
+} from '../states/courses.actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { getEditMode, getSelectedCourse } from '../states/courses.selector';
+import { Course } from 'src/app/models/course';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-add-course',
@@ -14,8 +21,26 @@ export class AddCourseComponent implements OnInit {
   constructor(private store: Store<appState>) {}
 
   coursesForm!: FormGroup;
+  isEdit: boolean = false;
+  course: Course | null = null;
 
   ngOnInit(): void {
+    this.init();
+    combineLatest([
+      this.store.select(getEditMode),
+      this.store.select(getSelectedCourse),
+    ]).subscribe(([isEditMode, course]) => {
+      if (course && isEditMode) {
+        this.isEdit = isEditMode;
+        this.course = course;
+        this.coursesForm.patchValue(course);
+      } else if (!isEditMode) {
+        this.coursesForm.reset();
+      }
+    });
+  }
+
+  init() {
     this.coursesForm = new FormGroup({
       title: new FormControl(null, [
         Validators.required,
@@ -33,10 +58,9 @@ export class AddCourseComponent implements OnInit {
         Validators.maxLength(100),
       ]),
       price: new FormControl(null),
-      image: new FormControl(null),
+      image: new FormControl(''),
     });
   }
-
   hideCreateForm() {
     this.store.dispatch(showFormAction({ value: false }));
   }
@@ -44,9 +68,85 @@ export class AddCourseComponent implements OnInit {
   onFormSubmit() {
     if (!this.coursesForm.valid) {
       console.log('form not valid', this.coursesForm?.value);
+    }
+    if (this.isEdit) {
+      if (!this.course || !this.course.id) {
+        // Check if course or its ID is missing
+        return; // Prevent submission
+      }
+      const updatedCourse: Course = {
+        id: this.course!.id,
+        title: this.coursesForm.value.title!,
+        description: this.coursesForm.value.description!,
+        author: this.coursesForm.value.author!,
+        image: '',
+        price: this.coursesForm.value.price!,
+      };
+      console.log('updatedCourse', updatedCourse.id);
+      this.store.dispatch(updateCourse({ course: updatedCourse }));
     } else {
       this.store.dispatch(createCourse({ course: this.coursesForm.value }));
-      this.store.dispatch(showFormAction({ value: false }));
+    }
+
+    console.log('show form called');
+
+    this.store.dispatch(showFormAction({ value: false }));
+  }
+
+  handleTitleValidationErrors() {
+    const titleControl = this.coursesForm.get('title');
+    if (titleControl?.touched && titleControl.invalid) {
+      if (titleControl?.errors?.['required']) {
+        return 'title is required field';
+      }
+      if (titleControl?.errors?.['minlength']) {
+        return 'Minlength is required field';
+      }
+      if (titleControl?.errors?.['maxlength']) {
+        return 'Maxlength is required field';
+      }
+      return 'An unexpected validation error occurred';
+    } else {
+      return '';
+    }
+  }
+  handleDescriptionValidationErrors() {
+    const desControl = this.coursesForm.get('description');
+    if (desControl?.touched && desControl.invalid) {
+      if (desControl?.errors?.['required']) {
+        return 'description is required field';
+      }
+      if (desControl?.errors?.['minlength']) {
+        return 'Minlength is required field';
+      }
+      if (desControl?.errors?.['maxlength']) {
+        return 'Maxlength is required field';
+      }
+      return 'An unexpected validation error occurred';
+    } else {
+      return '';
+    }
+  }
+
+  handleAuthorValidationErrors() {
+    const authorControl = this.coursesForm.get('author');
+    if (
+      authorControl?.touched &&
+      authorControl.invalid &&
+      authorControl?.errors?.['required']
+    ) {
+      if (authorControl?.errors?.['required']) {
+        return 'authorControl is required field';
+      }
+      if (authorControl?.errors?.['minlength']) {
+        return 'Minlength is required field';
+      }
+      if (authorControl?.errors?.['maxlength']) {
+        return 'Maxlength is required field';
+      }
+      return 'An unexpected validation error occurred';
+    } else {
+      return '';
     }
   }
 }
