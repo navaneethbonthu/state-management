@@ -7,12 +7,14 @@ import { CounterComponent } from './counter/counter.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'courses',
-    component: CoursesComponent,
+    path: 'counter',
+    loadChildren: () =>
+      import('./counter/counter.module').then((m) => m.CounterModule),
   },
   {
-    path: 'counter',
-    component: CounterComponent,
+    path: 'courses',
+    loadChildren: () =>
+      import('./courses/courses.module').then((m) => m.CoursesModuel),
   },
 ];
 
