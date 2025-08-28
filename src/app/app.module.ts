@@ -11,9 +11,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.state';
 import { LoaderComponent } from './loader/loader.component';
+import { ToasterComponent } from './toaster/toaster.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent, LoaderComponent],
+  declarations: [AppComponent, HomeComponent, HeaderComponent, LoaderComponent, ToasterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
