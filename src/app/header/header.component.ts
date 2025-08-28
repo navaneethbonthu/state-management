@@ -1,10 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../models/user';
+import { Store } from '@ngrx/store';
+import { appState } from '../store/app.state';
+import { getLoggedUser } from '../auth/states/auth.selector';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  constructor(private store: Store<appState>) {}
 
+  loggedUser$: Observable<User | null> | null = null;
+
+  ngOnInit(): void {
+    this.loggedUser$ = this.store.select(getLoggedUser);
+    //   .subscribe((res) => {
+    //   console.log('this.loggedUser$ ', res);
+    // });
+  }
 }

@@ -8,10 +8,15 @@
         <a routerLink="courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Courses</a>
     </div>
     <div class="header-auth-links">
-        <a href="#">Login</a>
-        <a href="#">Signup</a>
-        <button class="logout-button">
-            LOGOUT
-        </button>
+        <ng-container *ngIf="!(loggedUser$ | async)">
+            <a routerLink="auth/login">Login</a>
+            <a routerLink="auth/signup">Signup</a>
+        </ng-container>
+        <ng-container *ngIf="(loggedUser$ | async)">
+            <span>{{(loggedUser$ | async)?.email}}</span>
+            <button class="logout-button">
+                LOGOUT
+            </button>
+        </ng-container>
     </div>
 </div>
