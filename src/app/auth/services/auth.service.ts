@@ -1,16 +1,23 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { API_KEY } from 'src/app/constants/constants';
+import { AuthResponse } from 'src/app/models/auth-response';
 import { User } from 'src/app/models/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<AuthResponse> {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`;
     const body = { email, password, returnSecureToken: true };
-    return this.http.post<User>(url, body);
+    return this.http.post<AuthResponse>(url, body);
+  }
+  signup(email: string, password: string): Observable<AuthResponse> {
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
+    const body = { email, password, returnSecureToken: true };
+    return this.http.post<AuthResponse>(url, body);
   }
 
   onSetErrorMessage(errorResponse: HttpErrorResponse) {
@@ -38,5 +45,44 @@ export class AuthService {
         break;
     }
     return message;
+  }
+
+  formateUserFormAuthResponse(res: AuthResponse) {
+    const expairesAtTimeStamp = Date.now() + +res.expiresIn * 1000;
+    const formatedUser: User = {
+      idToken: res.idToken,
+      email: res.email,
+      expiresAt: expairesAtTimeStamp,
+      localId: res.localId,
+    };
+    return formatedUser;
+  }
+
+  saveUserOnLocalStorage(user: User) {
+    try {
+      localStorage.setItem('user', JSON.stringify(user));
+    } catch {
+      console.log('Some error occured while store the user in localStorage');
+    }
+  }
+
+  readUserOnLocalStorage() {
+    try {
+      const localStorageuser = localStorage.getItem('user');
+
+      if (!localStorageuser) {
+        return null;
+      }
+      const user: User = JSON.parse(localStorageuser);
+      if (user.expiresAt <= Date.now()) {
+        console.log('User session has expired.');
+        localStorage.removeItem('user');
+        return null;
+      }
+      return user;
+    } catch (error) {
+      localStorage.removeItem('user');
+      return null;
+    }
   }
 }

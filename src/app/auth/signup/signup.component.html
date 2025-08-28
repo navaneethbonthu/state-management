@@ -1,6 +1,6 @@
 <div class="app-signup">
     <div class="signup-container">
-        <form class="signup-form">
+        <form class="signup-form" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
             <h2>Signup Here</h2>
             <div class="input-group">
                 <label for="email">Email</label>
@@ -16,7 +16,7 @@
                 Signup
             </button>
             <div class="login-link">
-                Already have an account?<a href="#">Login Here</a>
+                Already have an account?<a [routerLink]="'./auth/login'">Login Here</a>
             </div>
         </form>
     </div>

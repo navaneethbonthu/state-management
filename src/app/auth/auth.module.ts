@@ -25,7 +25,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
-    EffectsModule.forFeature([AuthEffect]),
   ],
   exports: [],
 })
