@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducer } from './store/app.state';
-import { LoaderComponent } from './src/app/loader/loader.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, HeaderComponent, LoaderComponent],
