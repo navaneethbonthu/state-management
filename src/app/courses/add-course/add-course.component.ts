@@ -13,6 +13,7 @@ import { Course } from 'src/app/models/course';
 import { combineLatest } from 'rxjs';
 import { ref, uploadBytes } from '@angular/fire/storage';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { CourseService } from '../services/course.service';
 
 @Component({
   selector: 'app-add-course',
@@ -22,7 +23,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 export class AddCourseComponent implements OnInit {
   constructor(
     private store: Store<appState>,
-    private angularFireStorage: AngularFireStorage
+    private courseService: CourseService
   ) {}
 
   coursesForm!: FormGroup;
@@ -91,13 +92,7 @@ export class AddCourseComponent implements OnInit {
       console.log('updatedCourse', updatedCourse.id);
       this.store.dispatch(updateCourse({ course: updatedCourse }));
     } else {
-      const path =
-        'course/images/' + Date.now() + '_' + this.selectedImage?.name;
-      // const task = await this.angularFireStorage.upload(
-      //   path,
-      //   this.selectedImage
-      // );
-      // const url = await task.ref.getDownloadURL();
+      const url = this.courseService.uploadImage(this.selectedImage);
       this.coursesForm.patchValue({
         Image: 'https://dummyimage.com/qvga',
       });
