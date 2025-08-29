@@ -5,6 +5,7 @@ import {
   autoLogin,
   loginStart,
   loginSuccess,
+  logout,
   signUpSuccess,
   singUpStart,
 } from './auth.action';
@@ -45,7 +46,7 @@ export class AuthEffect {
             const loggedUser =
               this.authService.formateUserFormAuthResponse(res);
             this.authService.saveUserOnLocalStorage(loggedUser);
-            return loginSuccess({ user: loggedUser });
+            return loginSuccess({ user: loggedUser, redirectTo: true });
           }),
           catchError((errorResponse) => {
             this.store.dispatch(setIsLoading({ value: false }));
@@ -69,7 +70,7 @@ export class AuthEffect {
             const signedUser =
               this.authService.formateUserFormAuthResponse(res);
             this.authService.saveUserOnLocalStorage(signedUser);
-            return signUpSuccess({ user: signedUser });
+            return signUpSuccess({ user: signedUser, redirectTo: true });
           }),
           catchError((errorResponse) => {
             this.store.dispatch(setIsLoading({ value: false }));
@@ -86,7 +87,9 @@ export class AuthEffect {
       return this.$actions.pipe(
         ofType(...[loginSuccess, signUpSuccess]),
         tap((action) => {
-          this.router.navigate(['/']);
+          if (action.redirectTo) {
+            this.router.navigate(['/']);
+          }
         })
       );
     },
@@ -98,14 +101,25 @@ export class AuthEffect {
       ofType(autoLogin),
       mergeMap((_) => {
         const user = this.authService.readUserOnLocalStorage();
-        // console.log('readUserOnLocalStorage', user);
-
         if (user) {
-          return of(loginSuccess({ user: user }));
+          return of(loginSuccess({ user: user, redirectTo: false }));
         } else {
           return EMPTY;
         }
       })
     );
   });
+
+  $logout = createEffect(
+    () => {
+      return this.$actions.pipe(
+        ofType(logout),
+        map(() => {
+          this.authService.logout();
+          this.router.navigate(['auth', 'login']);
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }

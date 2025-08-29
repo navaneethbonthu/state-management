@@ -1,13 +1,17 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { API_KEY } from 'src/app/constants/constants';
 import { AuthResponse } from 'src/app/models/auth-response';
 import { User } from 'src/app/models/user';
+import { appState } from 'src/app/store/app.state';
+import { logout } from '../states/auth.action';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  timer: any;
+  constructor(private http: HttpClient, private store: Store<appState>) {}
 
   login(email: string, password: string): Observable<AuthResponse> {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`;
@@ -61,6 +65,7 @@ export class AuthService {
   saveUserOnLocalStorage(user: User) {
     try {
       localStorage.setItem('user', JSON.stringify(user));
+      this.autoLogoutUser(user);
     } catch {
       console.log('Some error occured while store the user in localStorage');
     }
@@ -84,5 +89,20 @@ export class AuthService {
       localStorage.removeItem('user');
       return null;
     }
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+  }
+
+  autoLogoutUser(user: User) {
+    const interval = user.expiresAt - Date.now();
+    this.timer = setTimeout(() => {
+      this.store.dispatch(logout());
+    }, interval);
   }
 }

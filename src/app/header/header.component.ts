@@ -4,6 +4,7 @@ import { User } from '../models/user';
 import { Store } from '@ngrx/store';
 import { appState } from '../store/app.state';
 import { getLoggedUser } from '../auth/states/auth.selector';
+import { logout } from '../auth/states/auth.action';
 
 @Component({
   selector: 'app-header',
@@ -20,5 +21,9 @@ export class HeaderComponent implements OnInit {
     //   .subscribe((res) => {
     //   console.log('this.loggedUser$ ', res);
     // });
+  }
+
+  onLogout() {
+    this.store.dispatch(logout());
   }
 }

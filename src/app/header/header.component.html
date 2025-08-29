@@ -14,7 +14,7 @@
         </ng-container>
         <ng-container *ngIf="(loggedUser$ | async)">
             <span>{{(loggedUser$ | async)?.email}}</span>
-            <button class="logout-button">
+            <button class="logout-button" (click)="onLogout()">
                 LOGOUT
             </button>
         </ng-container>
