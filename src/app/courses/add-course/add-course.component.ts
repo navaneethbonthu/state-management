@@ -65,7 +65,7 @@ export class AddCourseComponent implements OnInit {
         Validators.maxLength(100),
       ]),
       price: new FormControl(null),
-      image: new FormControl(''),
+      image: new FormControl(null),
     });
   }
   hideCreateForm() {
@@ -92,15 +92,12 @@ export class AddCourseComponent implements OnInit {
       console.log('updatedCourse', updatedCourse.id);
       this.store.dispatch(updateCourse({ course: updatedCourse }));
     } else {
-      const url = this.courseService.uploadImage(this.selectedImage);
+      // const url = this.courseService.uploadImage(this.selectedImage);
       this.coursesForm.patchValue({
-        Image: 'https://dummyimage.com/qvga',
+        image: 'https://dummyimage.com/qvga',
       });
-
       this.store.dispatch(createCourse({ course: this.coursesForm.value }));
     }
-
-    console.log('show form called');
 
     this.store.dispatch(showFormAction({ value: false }));
   }
