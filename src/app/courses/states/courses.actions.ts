@@ -16,6 +16,12 @@ export const createCourseSuccess = createAction(
   props<{ course: Course }>()
 );
 
+export const readCourses = createAction('[courses] read courses');
+export const readCourseSuccess = createAction(
+  '[courses] read course success',
+  props<{ courses: Course[] }>()
+);
+
 export const setEditMode = createAction(
   'setEditMode',
   props<{ value: boolean }>()

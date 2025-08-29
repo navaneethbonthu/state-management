@@ -6,3 +6,7 @@ export interface Course {
   author: string;
   price: number;
 }
+
+export interface CoursesResponse {
+  [key: string]: Course;
+}

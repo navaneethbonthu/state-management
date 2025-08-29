@@ -1,9 +1,9 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environments } from 'src/app/environments/environment';
-import { Course } from 'src/app/models/course';
+import { Course, CoursesResponse } from 'src/app/models/course';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +25,21 @@ export class CourseService {
   createCourse(course: Course): Observable<{ name: string }> {
     const url = `${environments.firebaseConfig.databaseURL}/courses.json`;
     return this.httpClient.post<{ name: string }>(url, course);
+  }
+
+  readCourses(): Observable<Course[]> {
+    const url = `${environments.firebaseConfig.databaseURL}/courses.json`;
+    return this.httpClient.get<CoursesResponse>(url).pipe(
+      map((res) => {
+        const courses: Course[] = [];
+        for (let key in res) {
+          if (res.hasOwnProperty(key)) {
+            const course = { ...res[key], id: key };
+            courses.push(course);
+          }
+        }
+        return courses;
+      })
+    );
   }
 }

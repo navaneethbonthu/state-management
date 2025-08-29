@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { act, Actions, createEffect, ofType } from '@ngrx/effects';
-import { createCourse, createCourseSuccess } from './courses.actions';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import {
+  createCourse,
+  createCourseSuccess,
+  readCourses,
+  readCourseSuccess,
+} from './courses.actions';
+import { catchError, exhaustMap, map, mergeMap, of } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CourseService } from '../services/course.service';
 import { Course } from 'src/app/models/course';
@@ -35,7 +40,34 @@ export class CoursesEffect {
           }),
           catchError((error) => {
             this.store.dispatch(setIsLoading({ value: false }));
-            return of(setErrorMessage({ message: 'Something went worng' }));
+            return of(
+              setErrorMessage({
+                message: 'Something went worng while creating course',
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  $readCourse = createEffect(() => {
+    return this.$actions.pipe(
+      ofType(readCourses),
+      mergeMap((action) => {
+        // this.store.dispatch(setIsLoading({ value: true }));
+        return this.courseService.readCourses().pipe(
+          map((res) => {
+            this.store.dispatch(setIsLoading({ value: false }));
+            return readCourseSuccess({ courses: res });
+          }),
+          catchError((error) => {
+            this.store.dispatch(setIsLoading({ value: false }));
+            return of(
+              setErrorMessage({
+                message: 'Something went worng while featching courses',
+              })
+            );
           })
         );
       })

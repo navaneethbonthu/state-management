@@ -4,6 +4,7 @@ import {
   createCourse,
   createCourseSuccess,
   deleteCourse,
+  readCourseSuccess,
   setEditMode,
   setSelectedCourse,
   showFormAction,
@@ -18,6 +19,9 @@ export const coursesReducer = createReducer(
   }),
   on(createCourseSuccess, (state, action) => {
     return { ...state, courses: [...state.courses, action.course] };
+  }),
+  on(readCourseSuccess, (state, action) => {
+    return { ...state, courses: action.courses };
   }),
   on(setEditMode, (state, action) => {
     return { ...state, isEditMode: action.value };
