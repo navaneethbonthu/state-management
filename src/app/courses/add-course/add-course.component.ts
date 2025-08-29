@@ -11,6 +11,8 @@ import { Title } from '@angular/platform-browser';
 import { getEditMode, getSelectedCourse } from '../states/courses.selector';
 import { Course } from 'src/app/models/course';
 import { combineLatest } from 'rxjs';
+import { ref, uploadBytes } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-add-course',
@@ -18,11 +20,15 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./add-course.component.css'],
 })
 export class AddCourseComponent implements OnInit {
-  constructor(private store: Store<appState>) {}
+  constructor(
+    private store: Store<appState>,
+    private angularFireStorage: AngularFireStorage
+  ) {}
 
   coursesForm!: FormGroup;
   isEdit: boolean = false;
   course: Course | null = null;
+  selectedImage: File | null = null;
 
   ngOnInit(): void {
     this.init();
@@ -65,7 +71,7 @@ export class AddCourseComponent implements OnInit {
     this.store.dispatch(showFormAction({ value: false }));
   }
 
-  onFormSubmit() {
+  async onFormSubmit() {
     if (!this.coursesForm.valid) {
       console.log('form not valid', this.coursesForm?.value);
     }
@@ -85,6 +91,17 @@ export class AddCourseComponent implements OnInit {
       console.log('updatedCourse', updatedCourse.id);
       this.store.dispatch(updateCourse({ course: updatedCourse }));
     } else {
+      const path =
+        'course/images/' + Date.now() + '_' + this.selectedImage?.name;
+      // const task = await this.angularFireStorage.upload(
+      //   path,
+      //   this.selectedImage
+      // );
+      // const url = await task.ref.getDownloadURL();
+      this.coursesForm.patchValue({
+        Image: 'https://dummyimage.com/qvga',
+      });
+
       this.store.dispatch(createCourse({ course: this.coursesForm.value }));
     }
 
@@ -147,6 +164,18 @@ export class AddCourseComponent implements OnInit {
       return 'An unexpected validation error occurred';
     } else {
       return '';
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const inputEle = event.target as HTMLInputElement;
+    if (inputEle.files && inputEle.files.length > 0) {
+      this.selectedImage = inputEle.files[0];
+
+      const fileNameSpan = document.querySelector('.file-name');
+      if (fileNameSpan) {
+        fileNameSpan.textContent = this.selectedImage.name;
+      }
     }
   }
 }

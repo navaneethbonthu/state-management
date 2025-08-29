@@ -14,7 +14,7 @@ export const initialState: CoursesState = {
       title: 'Mastering Modern JavaScript',
       description:
         'A comprehensive course covering ES6+ features, asynchronous JavaScript, and front-end development essentials.',
-      image: './assets/images/javascript.jpg',
+      image: 'https://dummyimage.com/qvga',
       author: 'John Doe',
       price: 49.99,
     },
@@ -24,7 +24,7 @@ export const initialState: CoursesState = {
       title: 'Angular - From Zero to Hero',
       description:
         'Learn to build robust and scalable single-page applications with Angular, including components, services, routing, and state management.',
-      image: './assets/images/javascript.jpg',
+      image: 'https://dummyimage.com/qvga',
       author: 'Jane Smith',
       price: 59.99,
     },

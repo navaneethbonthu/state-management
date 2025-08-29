@@ -4,8 +4,6 @@ import { SignupComponent } from './signup/signup.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthEffect } from './states/auth.effect';
 
 const routes: Routes = [
   {

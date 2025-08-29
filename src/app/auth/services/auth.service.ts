@@ -2,11 +2,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { API_KEY } from 'src/app/constants/constants';
 import { AuthResponse } from 'src/app/models/auth-response';
 import { User } from 'src/app/models/user';
 import { appState } from 'src/app/store/app.state';
 import { logout } from '../states/auth.action';
+import { environments } from 'src/app/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,12 +14,12 @@ export class AuthService {
   constructor(private http: HttpClient, private store: Store<appState>) {}
 
   login(email: string, password: string): Observable<AuthResponse> {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`;
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environments.firebaseConfig.apiKey}`;
     const body = { email, password, returnSecureToken: true };
     return this.http.post<AuthResponse>(url, body);
   }
   signup(email: string, password: string): Observable<AuthResponse> {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`;
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environments.firebaseConfig.apiKey}`;
     const body = { email, password, returnSecureToken: true };
     return this.http.post<AuthResponse>(url, body);
   }
