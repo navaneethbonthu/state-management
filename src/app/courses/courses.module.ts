@@ -10,11 +10,13 @@ import { coursesReducer } from './states/courses.reducer';
 import { COURSES_STATE } from '../constants/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffect } from './states/courses.effect';
+import { canActivateFn } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: CoursesComponent,
+    canActivate: [canActivateFn],
   },
 ];
 
