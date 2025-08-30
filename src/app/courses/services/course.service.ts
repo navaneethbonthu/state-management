@@ -43,7 +43,7 @@ export class CourseService {
     );
   }
 
-  updateCourse(course: Course) {
+  updateCourse(course: Course): Observable<{ name: string }> {
     if (!course?.id) {
       throw new Error('Course ID is required to update a course.');
     }
