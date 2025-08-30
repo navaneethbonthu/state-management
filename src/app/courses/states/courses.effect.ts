@@ -3,6 +3,8 @@ import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   createCourse,
   createCourseSuccess,
+  deleteCourse,
+  deleteCourseSuccess,
   readCourses,
   readCourseSuccess,
   updateCourse,
@@ -81,11 +83,10 @@ export class CoursesEffect {
     return this.$actions.pipe(
       ofType(updateCourse),
       mergeMap((action) => {
+        this.store.dispatch(setIsLoading({ value: true }));
         return this.courseService.updateCourse(action.course).pipe(
           map((res) => {
-            // this.store.dispatch(setIsLoading({ value: false }));
-
-            // console.log(res);
+            this.store.dispatch(setIsLoading({ value: false }));
             return updateCourseSuccess({ course: action.course });
           }),
           catchError((error) => {
@@ -93,6 +94,29 @@ export class CoursesEffect {
             return of(
               setErrorMessage({
                 message: 'Something went worng while updating courses',
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  $deleteCourse = createEffect(() => {
+    return this.$actions.pipe(
+      ofType(deleteCourse),
+      mergeMap((action) => {
+        this.store.dispatch(setIsLoading({ value: true }));
+        return this.courseService.deleteCourse(action.id).pipe(
+          map(() => {
+            this.store.dispatch(setIsLoading({ value: false }));
+            return deleteCourseSuccess({ id: action.id });
+          }),
+          catchError((error) => {
+            this.store.dispatch(setIsLoading({ value: false }));
+            return of(
+              setErrorMessage({
+                message: 'Something went worng while deleting the  courses',
               })
             );
           })

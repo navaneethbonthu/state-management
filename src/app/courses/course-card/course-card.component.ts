@@ -26,6 +26,8 @@ export class CourseCardComponent {
   }
 
   onDeleteCourse() {
-    this.store.dispatch(deleteCourse({ id: this.course?.id }));
+    if (this.course?.id) {
+      this.store.dispatch(deleteCourse({ id: this.course.id }));
+    }
   }
 }

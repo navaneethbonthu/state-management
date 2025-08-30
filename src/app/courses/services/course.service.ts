@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { map, Observable } from 'rxjs';
 import { environments } from 'src/app/environments/environment';
 import { Course, CoursesResponse } from 'src/app/models/course';
+import { deleteCourse } from '../states/courses.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -51,5 +52,10 @@ export class CourseService {
     const courseData = { [id]: courseWithoutId };
     const url = `${environments.firebaseConfig.databaseURL}/courses.json`;
     return this.httpClient.patch<{ name: string }>(url, courseData);
+  }
+
+  deleteCourse(id: string) {
+    const url = `${environments.firebaseConfig.databaseURL}/courses/${id}.json`;
+    return this.httpClient.delete(url);
   }
 }
