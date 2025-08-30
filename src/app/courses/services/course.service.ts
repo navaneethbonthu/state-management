@@ -42,4 +42,14 @@ export class CourseService {
       })
     );
   }
+
+  updateCourse(course: Course) {
+    if (!course?.id) {
+      throw new Error('Course ID is required to update a course.');
+    }
+    const { id, ...courseWithoutId } = course;
+    const courseData = { [id]: courseWithoutId };
+    const url = `${environments.firebaseConfig.databaseURL}/courses.json`;
+    return this.httpClient.patch<{ name: string }>(url, courseData);
+  }
 }

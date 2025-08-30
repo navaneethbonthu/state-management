@@ -9,6 +9,7 @@ import {
   setSelectedCourse,
   showFormAction,
   updateCourse,
+  updateCourseSuccess,
 } from './courses.actions';
 import { state } from '@angular/animations';
 
@@ -29,7 +30,7 @@ export const coursesReducer = createReducer(
   on(setSelectedCourse, (state, action) => {
     return { ...state, selectedCourse: action.course };
   }),
-  on(updateCourse, (state, action) => {
+  on(updateCourseSuccess, (state, action) => {
     const updatedCourses = state.courses.map((course) => {
       if (action.course && course.id === action.course?.id) {
         return action.course;

@@ -81,12 +81,16 @@ export class AddCourseComponent implements OnInit {
         // Check if course or its ID is missing
         return; // Prevent submission
       }
+      // const url = this.courseService.uploadImage(this.selectedImage);
+      //  this.coursesForm.patchValue({
+      //   image: 'https://dummyimage.com/qvga',
+      // });
       const updatedCourse: Course = {
         id: this.course!.id,
         title: this.coursesForm.value.title!,
         description: this.coursesForm.value.description!,
         author: this.coursesForm.value.author!,
-        image: '',
+        image: 'https://dummyimage.com/qvga',
         price: this.coursesForm.value.price!,
       };
       console.log('updatedCourse', updatedCourse.id);
