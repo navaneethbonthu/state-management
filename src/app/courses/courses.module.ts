@@ -11,6 +11,7 @@ import { COURSES_STATE } from '../constants/constants';
 import { EffectsModule } from '@ngrx/effects';
 import { CoursesEffect } from './states/courses.effect';
 import { canActivateFn } from '../guards/auth.guard';
+import { CourseDetailsComponent } from './course-details/course-details.component';
 
 const routes: Routes = [
   {
@@ -18,10 +19,20 @@ const routes: Routes = [
     component: CoursesComponent,
     canActivate: [canActivateFn],
   },
+  {
+    path: ':id',
+    component: CourseDetailsComponent,
+    canActivate: [canActivateFn],
+  },
 ];
 
 @NgModule({
-  declarations: [CoursesComponent, CourseCardComponent, AddCourseComponent],
+  declarations: [
+    CoursesComponent,
+    CourseCardComponent,
+    AddCourseComponent,
+    CourseDetailsComponent,
+  ],
   imports: [
     ReactiveFormsModule,
     CommonModule,

@@ -18,3 +18,9 @@ export const getEditMode = createSelector(getCoursesState, (state) => {
 export const getSelectedCourse = createSelector(getCoursesState, (state) => {
   return state.selectedCourse;
 });
+
+export const getCourseById = (courseId: string) => {
+  return createSelector(getCoursesState, (state) => {
+    return state.courses.find((course) => course.id === courseId);
+  });
+};
